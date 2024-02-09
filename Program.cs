@@ -8,9 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 builder.Services.AddScoped<IRepositoryPokemon, RepositoryPokemon>();
-builder.Services.AddScoped<IRepositoryAbility, RepositoryAbility>();
-builder.Services.AddScoped<IRepositoryPokemonAbility, RepositoryPokemonAbility>();
-builder.Services.AddScoped<IRepositoryType, RepositoryType>();
+
 
 
 var app = builder.Build();

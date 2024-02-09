@@ -44,47 +44,34 @@ namespace FullstackPokemonApp.Pages
                     Name = response.Name,
                     BaseExperience = response.BaseExperience,
                     Weight = response.Weight,
-
                 };
 
-                // Loopa igenom och lägg till typerna för Pokemon
-                foreach (var type in response.Types)
+                if (response.Abilities.Any())   // Om det finns några abilities i pokemonens ability-lista...
                 {
-                    var typeDbModel = new TypeDbModel
+                    List<PokemonAbilityDbModel> list = new();
+                    foreach (var ability in response.Abilities)
                     {
-                        Name = type.TypeDetail.Name
-                    };
+                        // Skapa en db-kopia av varje ability 
+                        var abilityDbModel = new AbilityDbModel
+                        {
+                            Name = ability.AbilityDetail.Name,
+                            IsHidden = ability.IsHidden,
+                            Slot = ability.Slot
+                        };
+                        // Skapa en ny PokemonAbilityDbModel
+                        var pokemonAbilityDbModel = new PokemonAbilityDbModel();
+                        pokemonAbilityDbModel.Ability = abilityDbModel;
+                        pokemonAbilityDbModel.Pokemon = pokemonDbModel;
+                        pokemonAbilityDbModel.PokemonId = pokemonDbModel.Id;
+                        pokemonAbilityDbModel.AbilityId = abilityDbModel.Id;
+                        list.Add(pokemonAbilityDbModel);
+                    }
 
-
-                    // Skapa en koppling mellan Pokemon och dess typ
-                    pokemonDbModel.TypeId = typeDbModel.Id;
-
-
-
+                    pokemonDbModel.PokemonAbilities = list;
                 }
 
-                // Loopa igenom och lägg till förmågorna för Pokemon
-                foreach (var ability in response.Abilities)
-                {
-                    var abilityDbModel = new AbilityDbModel
-                    {
-                        Name = ability.AbilityDetail.Name,
-                        IsHidden = ability.IsHidden,
-                        Slot = ability.Slot
-                    };
-
-
-                    // Skapa en koppling mellan Pokemon och dess förmåga
-                    var pokemonAbilityDbModel = new PokemonAbilityDbModel
-                    {
-                        PokemonId = pokemonDbModel.Id,
-                        AbilityId = abilityDbModel.Id
-                    };
-
-                    await _repositoryPokemon.AddPokemon(pokemonDbModel);
-
-                }
-
+                // Lägg pokemon i databasen. 
+                await _repositoryPokemon.AddPokemon(pokemonDbModel);
                 return RedirectToPage("/Index");
             }
             catch (Exception ex)

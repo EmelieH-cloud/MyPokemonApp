@@ -13,15 +13,9 @@ namespace FullstackPokemonApp.Database
         public DbSet<PokemonDbModel> Pokemons { get; set; }
         public DbSet<AbilityDbModel> Abilities { get; set; }
         public DbSet<PokemonAbilityDbModel> PokemonAbilities { get; set; }
-        public DbSet<TypeDbModel> Types { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // One-to-many relation: Pokemon -> Type
-            modelBuilder.Entity<PokemonDbModel>()
-                .HasOne(p => p.Type)
-                .WithMany(t => t.Pokemons)
-                .HasForeignKey(p => p.TypeId);
 
             // Many-to-many relation: Pokemon <-> Ability
             modelBuilder.Entity<PokemonAbilityDbModel>()

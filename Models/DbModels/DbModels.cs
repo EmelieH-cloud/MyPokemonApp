@@ -18,9 +18,7 @@ namespace FullstackPokemonApp.Models.DbModels
         public int BaseExperience { get; set; }
         public int Weight { get; set; }
 
-        public int? TypeId { get; set; } // pokemon har foreign key i one-to-many relationen 
-        public TypeDbModel Type { get; set; }
-
+        // Navigation property for many-to-many relationen med abilities
         public List<PokemonAbilityDbModel> PokemonAbilities { get; set; }
     }
 
@@ -32,27 +30,21 @@ namespace FullstackPokemonApp.Models.DbModels
         public bool IsHidden { get; set; }
         public int Slot { get; set; }
 
-        // Navigation property for many-to-many relation with Pokemon
+        // Navigation property for many-to-many relationen med pokemon
         public List<PokemonAbilityDbModel> PokemonAbilities { get; set; }
     }
 
     public class PokemonAbilityDbModel
     {
+        [Key]
         public int PokemonId { get; set; }
         public PokemonDbModel Pokemon { get; set; }
 
+        [Key]
         public int AbilityId { get; set; }
         public AbilityDbModel Ability { get; set; }
     }
 
-    public class TypeDbModel
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; }
 
-        // Navigation property for one-to-many relation with Pokemon
-        public List<PokemonDbModel> Pokemons { get; set; }
-    }
 
 }
