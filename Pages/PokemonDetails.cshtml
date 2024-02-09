@@ -1,0 +1,34 @@
+﻿@page
+@model FullstackPokemonApp.Pages.PokemonDetailsModel
+@{
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pokemon Details</title>
+</head>
+<body>
+    <h1>Pokemon Details</h1>
+
+    @if (Model.Pokemon != null && Model.Pokemon.Abilities != null)
+    {
+        <h2>@Model.Pokemon.Name</h2>
+        <ul>
+            @foreach (var ability in Model.Pokemon.Abilities)
+            {
+                <li>@ability.AbilityDetail.Name</li>
+            }
+        </ul>
+        <p>Base Experience: @Model.Pokemon.BaseExperience</p>
+        <p>Weight: @Model.Pokemon.Weight</p>
+        <form method="post">
+            <button type="submit" formaction="/PokemonDetails?handler=AddPokemonToDatabase">Add Pokemon to Database</button>
+        </form>
+    }
+    else
+    {
+        <p>Pokemon not found.</p>
+    }
+</body>
+</html>

@@ -1,0 +1,22 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pokemon List</title>
+</head>
+<body>
+    <h1>Pokemon List</h1>
+    <ul>
+        @foreach (var result in Model.Results)
+        {
+            <li><a asp-page="/PokemonDetails" asp-route-name="@result.Name">@result.Name</a></li>
+        }
+    </ul>
+</body>
+</html>
