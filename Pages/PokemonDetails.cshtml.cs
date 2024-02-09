@@ -10,16 +10,12 @@ namespace FullstackPokemonApp.Pages
     {
         public PokemonRoot? Pokemon { get; set; } // Nu vill vi hämta detaljer om en specifik pokemon från API:et.
         private readonly IRepositoryPokemon _repositoryPokemon;
-        private readonly IRepositoryAbility _repositoryAbility;
-        private readonly IRepositoryPokemonAbility _repositoryPokemonAbility;
-        private readonly IRepositoryType _repositoryType;
 
-        public PokemonDetailsModel(IRepositoryPokemon repositoryPokemon, IRepositoryAbility repositoryAbility, IRepositoryPokemonAbility repositoryPokemonAbility, IRepositoryType repositoryType)
+
+        public PokemonDetailsModel(IRepositoryPokemon repositoryPokemon)
         {
             _repositoryPokemon = repositoryPokemon;
-            _repositoryAbility = repositoryAbility;
-            _repositoryPokemonAbility = repositoryPokemonAbility;
-            _repositoryType = repositoryType;
+
         }
 
         public async Task OnGet(string name)
@@ -51,9 +47,6 @@ namespace FullstackPokemonApp.Pages
 
                 };
 
-
-                await _repositoryPokemon.AddPokemon(pokemonDbModel);
-
                 // Loopa igenom och lägg till typerna för Pokemon
                 foreach (var type in response.Types)
                 {
@@ -62,14 +55,12 @@ namespace FullstackPokemonApp.Pages
                         Name = type.TypeDetail.Name
                     };
 
-                    // Lägg till typen i databasen
-                    await _repositoryType.AddType(typeDbModel);
 
                     // Skapa en koppling mellan Pokemon och dess typ
                     pokemonDbModel.TypeId = typeDbModel.Id;
 
-                    // Uppdatera Pokemon i databasen med typen
-                    await _repositoryPokemon.UpdatePokemon(pokemonDbModel);
+
+
                 }
 
                 // Loopa igenom och lägg till förmågorna för Pokemon
@@ -82,8 +73,6 @@ namespace FullstackPokemonApp.Pages
                         Slot = ability.Slot
                     };
 
-                    // Lägg till förmågan i databasen
-                    await _repositoryAbility.AddAbility(abilityDbModel);
 
                     // Skapa en koppling mellan Pokemon och dess förmåga
                     var pokemonAbilityDbModel = new PokemonAbilityDbModel
@@ -92,8 +81,8 @@ namespace FullstackPokemonApp.Pages
                         AbilityId = abilityDbModel.Id
                     };
 
-                    // Lägg till kopplingen i databasen
-                    await _repositoryPokemonAbility.AddPokemonAbility(pokemonAbilityDbModel);
+                    await _repositoryPokemon.AddPokemon(pokemonDbModel);
+
                 }
 
                 return RedirectToPage("/Index");
