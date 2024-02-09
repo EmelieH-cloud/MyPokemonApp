@@ -18,7 +18,7 @@ namespace FullstackPokemonApp.Models.DbModels
         public int BaseExperience { get; set; }
         public int Weight { get; set; }
 
-        public int TypeId { get; set; } // pokemon har foreign key i one-to-many relationen 
+        public int? TypeId { get; set; } // pokemon har foreign key i one-to-many relationen 
         public TypeDbModel Type { get; set; }
 
         public List<PokemonAbilityDbModel> PokemonAbilities { get; set; }

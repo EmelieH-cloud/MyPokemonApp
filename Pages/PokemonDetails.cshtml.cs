@@ -35,7 +35,7 @@ namespace FullstackPokemonApp.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostAddPokemonToDatabase(string name)
+        public async Task<IActionResult> OnPost(string name)
         {
             try
             {
@@ -47,10 +47,11 @@ namespace FullstackPokemonApp.Pages
                 {
                     Name = response.Name,
                     BaseExperience = response.BaseExperience,
-                    Weight = response.Weight
+                    Weight = response.Weight,
+
                 };
 
-                // Lägg till Pokemon i databasen
+
                 await _repositoryPokemon.AddPokemon(pokemonDbModel);
 
                 // Loopa igenom och lägg till typerna för Pokemon

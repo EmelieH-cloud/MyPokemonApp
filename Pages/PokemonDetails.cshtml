@@ -22,8 +22,8 @@
         </ul>
         <p>Base Experience: @Model.Pokemon.BaseExperience</p>
         <p>Weight: @Model.Pokemon.Weight</p>
-        <form method="post">
-            <button type="submit" formaction="/PokemonDetails?handler=AddPokemonToDatabase">Add Pokemon to Database</button>
+        <form method="post" asp-route-name="@Model.Pokemon.Name">
+            <button type="submit" >Add Pokemon to Database</button>
         </form>
     }
     else
